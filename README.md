@@ -1,5 +1,5 @@
 How To start this repo :
 1. Npm Instal
-2. npm install prisma/client
-3. npx prisma db pull
-4 npx prisma run generate
+2. Npm install prisma/client
+3. Npx prisma db pull
+4. Npx prisma run generate
