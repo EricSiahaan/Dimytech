@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model customer {
+  id              Int               @id @default(autoincrement())
+  customer_name   String            @db.VarChar(50)
+  created_at      DateTime          @default(now()) @db.Timestamp(0)
+  updated_at      DateTime          @default(now()) @db.Timestamp(0)
+  deleted_at      DateTime?         @db.Timestamp(0)
+  customer_adress customer_adress[]
+}
+
+model customer_adress {
+  id          Int           @id @default(autoincrement())
+  customer_id Int
+  address     String        @db.VarChar(100)
+  created_at  DateTime      @default(now()) @db.Timestamp(0)
+  updated_at  DateTime      @default(now()) @db.Timestamp(0)
+  deleted_at  DateTime?     @db.Timestamp(0)
+  customer    customer      @relation(fields: [customer_id], references: [id], onUpdate: Restrict, map: "customer_adress_ibfk_1")
+  sales_order sales_order[]
+
+  @@index([customer_id], map: "customer_id")
+}
+
+model payment_method {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(50)
+  is_active   Int           @db.TinyInt
+  created_at  DateTime      @default(now()) @db.Timestamp(0)
+  updated_at  DateTime      @default(now()) @db.Timestamp(0)
+  deleted_at  DateTime?     @db.Timestamp(0)
+  sales_order sales_order[]
+}
+
+model product {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(50)
+  price       Decimal       @db.Decimal(10, 0)
+  created_at  DateTime      @default(now()) @db.Timestamp(0)
+  updated_at  DateTime      @default(now()) @db.Timestamp(0)
+  deleted_at  DateTime?     @db.Timestamp(0)
+  sales_order sales_order[]
+}
+
+model sales_order {
+  id              Int             @id @default(autoincrement())
+  id_product      Int
+  id_payment      Int
+  customer_id     Int
+  created_at      DateTime        @default(now()) @db.Timestamp(0)
+  updated_at      DateTime        @default(now()) @db.Timestamp(0)
+  deleted_at      DateTime?       @db.Timestamp(0)
+  product         product         @relation(fields: [id_product], references: [id], onUpdate: Restrict, map: "sales_order_ibfk_1")
+  payment_method  payment_method  @relation(fields: [id_payment], references: [id], onUpdate: Restrict, map: "sales_order_ibfk_2")
+  customer_adress customer_adress @relation(fields: [customer_id], references: [id], onUpdate: Restrict, map: "sales_order_ibfk_3")
+
+  @@index([customer_id], map: "customer_id")
+  @@index([id_payment], map: "id_payment")
+  @@index([id_product], map: "id_product")
+}
