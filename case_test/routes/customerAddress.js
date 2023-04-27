@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 
-a
+
 router.post('/customeraddress', createCustomerAdress);
 router.get('/customeraddress', getCustomerAdress);
 router.get('/customeraddress/:id', getCustomerAdressbyId);

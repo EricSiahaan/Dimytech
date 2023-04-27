@@ -13,11 +13,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(SalesOrder)
-app.use(Customer)
-app.use(CustomerAddress)
-app.use(Product)
-app.use(PaymentMethod)
+app.use("/v1/", SalesOrder)
+app.use("/v1/", Customer)
+app.use("/v1/", CustomerAddress)
+app.use("/v1/", Product)
+app.use("/v1/", PaymentMethod)
 
 app.listen(process.env.APP_PORT, () => {
     console.log("Server Running .. ")
